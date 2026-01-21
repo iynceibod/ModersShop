@@ -15,7 +15,7 @@ body {
 
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #2ea043;
+  outline: 2px solid #3f7bff;
   outline-offset: 2px;
 }
 
@@ -30,7 +30,7 @@ button {
 }
 
 body {
-  background: #0d0d0d;
+  background: #000000;
   color: #ffffff;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 0;
@@ -55,8 +55,8 @@ body {
 }
 
 .registration-form {
-  background: #161616;
-  border: 1px solid #2d2d2d;
+  background: #0a0a0a;
+  border: 1px solid #1f1f1f;
   border-radius: 16px;
   padding: 40px 28px;
 }
@@ -92,9 +92,9 @@ body {
 .form-input {
   width: 100%;
   height: 50px;
-  background: #0d0d0d;
+  background: #000000;
   border-radius: 10px;
-  border: 1px solid #2d2d2d;
+  border: 1px solid #1f1f1f;
   padding: 0 18px;
   color: #ffffff;
   font-size: 15px;
@@ -103,8 +103,8 @@ body {
 }
 
 .form-input:focus {
-  border-color: #2ea043;
-  background: #0d0d0d;
+  border-color: #3f7bff;
+  background: #000000;
 }
 
 .form-input::placeholder {
@@ -116,7 +116,7 @@ body {
   height: 54px;
   border-radius: 10px;
   border: none;
-  background: #238636;
+  background: #3f7bff;
   color: #ffffff;
   font-weight: 600;
   font-size: 15px;
@@ -126,11 +126,11 @@ body {
 }
 
 .submit-button:hover {
-  background: #2ea043;
+  background: #4d88ff;
 }
 
 .submit-button:active {
-  background: #26a641;
+  background: #3f7bff;
 }
 
 .submit-button:disabled {
@@ -183,7 +183,7 @@ body {
 }
 
 .success-message {
-  background: #238636;
+  background: #3f7bff;
   padding: 18px;
   border-radius: 10px;
   margin-bottom: 24px;

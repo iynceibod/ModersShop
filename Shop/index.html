@@ -6,134 +6,169 @@
     <title>Магазин модерации</title>
 
     <link rel="stylesheet" href="style.css" />
-        
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
-    <main class="frame">
-      <section class="content">
-        <div class="background-box"></div>
-        <h1 class="title">МАГАЗИН МОДЕРАЦИИ</h1>
-
-        <div class="user-balance">
-          <span id="user-balls">Загрузка...</span>
-        </div>
-
-        <section class="actions-grid">
-          <button type="button" class="action-item" onclick="buyItem('remove_warn', 130)">
-            <span class="action-title">СНЯТЬ ВЫГОВОР</span>
-            <img class="action-icon" src="img/warn.svg" alt="warn" />
-            <span class="action-cost">130 баллов</span>
-          </button>
-
-          <button type="button" class="action-item" onclick="buyItem('remove_pred', 65)">
-            <span class="action-title">СНЯТЬ ПРЕДУПРЕЖДЕНИЕ</span>
-            <img class="action-icon" src="img/pred.svg" alt="pred" />
-            <span class="action-cost">65 баллов</span>
-          </button>
-
-          <button type="button" class="action-item" onclick="buyItem('extend_family', 300)">
-            <span class="action-title">ПРОДЛЕНИЕ СЕМЕЙНОЙ РОЛИ</span>
-            <img class="action-icon" src="img/family.svg" alt="family" />
-            <span class="action-cost">300 баллов</span>
-          </button>
-
-          <button type="button" class="action-item" onclick="showRoleForm()">
-            <span class="action-title">СОЗДАНИЕ ЛИЧНОЙ РОЛИ</span>
-            <img class="action-icon" src="img/role.svg" alt="role" />
-            <span class="action-cost">200 баллов</span>
-          </button>
-        </section>
-
-        <section class="actions">
-
-          <button type="button" class="action-item wide" onclick="openRoulette()">
-            <span class="action-title">СПЕЦИАЛЬНАЯ РУЛЕТКА</span>
-            <i class="fa-solid fa-skull-crossbones action-icon"></i>
-            <span class="action-cost">15 баллов</span>
-          </button>
-
-          <button type="button" class="action-item wide" onclick="buyItem('reduce_days', 30)">
-            <span class="action-title">СНИЖЕНИЕ СРОКА ПОВЫШЕНИЯ</span>
-            <img class="action-icon" src="img/up.svg" alt="up" />
-            <span class="action-cost">30 баллов</span>
-          </button>
-
-          <button type="button" class="action-item wide" onclick="showNicknameForm()">
-            <span class="action-title">ИЗМЕНИТЬ НИК-НЕЙМ</span>
-            <img class="action-icon" src="img/nick.svg" alt="nick" />
-            <span class="action-cost">50 баллов</span>
-          </button>
-        </section>
-
-        <div id="roleForm" class="form-overlay hidden">
-          <div class="form-content">
-            <h3>Создание личной роли</h3>
-            <input type="text" id="roleName" placeholder="Название роли" maxlength="30" />
-            <input type="text" id="roleColor" placeholder="Цвет роли (#RRGGBB)" maxlength="7" />
-            <div class="form-buttons">
-              <button type="button" onclick="buyRole()">Создать роль</button>
-              <button type="button" onclick="hideRoleForm()">Отмена</button>
-            </div>
+    <main class="app">
+      <div class="container">
+        
+        <header class="header">
+          <h1 class="header-title">МАГАЗИН МОДЕРАЦИИ</h1>
+          <div class="header-balance">
+            <span class="balance-label">Ваш баланс:</span>
+            <span id="user-balls" class="balance-value">Загрузка...</span>
           </div>
-        </div>
+        </header>
 
-        <div id="nicknameForm" class="form-overlay hidden">
-          <div class="form-content">
-            <h3>Изменение никнейма</h3>
-            <input type="text" id="newNickname" placeholder="Новый никнейм" maxlength="20" />
-            <div class="form-buttons">
-              <button type="button" onclick="buyNickname()">Изменить никнейм</button>
-              <button type="button" onclick="hideNicknameForm()">Отмена</button>
-            </div>
+        <section class="shop-section">
+          <div class="shop-grid">
+            <button type="button" class="shop-card" onclick="buyItem('remove_warn', 130)">
+              <div class="card-icon">
+                <img src="img/warn.svg" alt="" />
+              </div>
+              <h3 class="card-title">Снять выговор</h3>
+              <div class="card-price">130 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card" onclick="buyItem('remove_pred', 65)">
+              <div class="card-icon">
+                <img src="img/pred.svg" alt="" />
+              </div>
+              <h3 class="card-title">Снять предупреждение</h3>
+              <div class="card-price">65 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card" onclick="buyItem('extend_family', 300)">
+              <div class="card-icon">
+                <img src="img/family.svg" alt="" />
+              </div>
+              <h3 class="card-title">Продление семейной роли</h3>
+              <div class="card-price">300 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card" onclick="showRoleForm()">
+              <div class="card-icon">
+                <img src="img/role.svg" alt="" />
+              </div>
+              <h3 class="card-title">Создание личной роли</h3>
+              <div class="card-price">200 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card shop-card-wide" onclick="openRoulette()">
+              <div class="card-icon">
+                <i class="fa-solid fa-skull-crossbones"></i>
+              </div>
+              <h3 class="card-title">Специальная рулетка</h3>
+              <div class="card-price">15 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card shop-card-wide" onclick="buyItem('reduce_days', 30)">
+              <div class="card-icon">
+                <img src="img/up.svg" alt="" />
+              </div>
+              <h3 class="card-title">Снижение срока повышения</h3>
+              <div class="card-price">30 баллов</div>
+            </button>
+
+            <button type="button" class="shop-card shop-card-wide" onclick="showNicknameForm()">
+              <div class="card-icon">
+                <img src="img/nick.svg" alt="" />
+              </div>
+              <h3 class="card-title">Изменить ник-нейм</h3>
+              <div class="card-price">50 баллов</div>
+            </button>
           </div>
-        </div>
+        </section>
 
         <section class="exchange-section">
-          <h2 class="exchange-title">ОБМЕНЯТЬ БАЛЛЫ НА ОПЫТ</h2>
-          <p class="exchange-rate">10 баллов = 2 500 опыта (минимум 10)</p>
+          <h2 class="section-title">Обменять баллы на опыт</h2>
+          <p class="section-desc">10 баллов = 2 500 опыта (минимум 10)</p>
 
-          <form class="exchange-form" onsubmit="return false;">
-            <input type="number" id="exchangeAmount" class="exchange-input" placeholder="Введите количество баллов" min="10" />
-            <div class="exchange-buttons">
-              <button type="button" class="exchange-button" onclick="calculateExchange()">РАССЧИТАТЬ</button>
-              <button type="button" class="exchange-button" onclick="buyExchange()">ОБМЕНЯТЬ</button>
+          <div class="exchange-form">
+            <input 
+              type="number" 
+              id="exchangeAmount" 
+              class="exchange-input" 
+              placeholder="Количество баллов" 
+              min="10" 
+            />
+            <div class="exchange-actions">
+              <button type="button" class="btn btn-secondary" onclick="calculateExchange()">
+                Рассчитать
+              </button>
+              <button type="button" class="btn btn-primary" onclick="buyExchange()">
+                Обменять
+              </button>
             </div>
-          </form>
+          </div>
 
           <div id="exchangeResult" class="exchange-result hidden"></div>
         </section>
 
-        <div id="notification" class="notification hidden"></div>
-        <div id="loading" class="loading-overlay hidden">
-          <div class="loading-spinner"></div>
-        </div>
-      </section>
+      </div>
     </main>
 
-        <div id="rouletteModal" class="roulette-overlay hidden">
-          <div class="roulette-box">
-            <div class="roulette-wrapper">
-              <div class="roulette-pointer"></div>
-              <canvas id="rouletteCanvas" width="300" height="300"></canvas>
-            </div>
-
-            <button id="spinButton" class="spin-button" onclick="spinRoulette()">КРУТИТЬ</button>
-            <div id="rouletteResult" class="roulette-result hidden"></div>
-
-    <div class="prize-list">
-      <h4>Список призов:</h4>
-      <ul id="prizeList"></ul>
+    <!-- Modals -->
+    <div id="roleForm" class="modal hidden">
+      <div class="modal-overlay" onclick="hideRoleForm()"></div>
+      <div class="modal-content">
+        <h3 class="modal-title">Создание личной роли</h3>
+        <div class="modal-body">
+          <input type="text" id="roleName" class="modal-input" placeholder="Название роли" maxlength="30" />
+          <input type="text" id="roleColor" class="modal-input" placeholder="Цвет роли (#RRGGBB)" maxlength="7" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary" onclick="buyRole()">Создать</button>
+          <button type="button" class="btn btn-secondary" onclick="hideRoleForm()">Отмена</button>
+        </div>
+      </div>
     </div>
 
-    <button class="spin-close" onclick="closeRoulette()">ЗАКРЫТЬ</button>
-  </div>
-</div>
-    <!-- <button onclick="adminReset()" style="padding: 10px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    123
-</button> -->
+    <div id="nicknameForm" class="modal hidden">
+      <div class="modal-overlay" onclick="hideNicknameForm()"></div>
+      <div class="modal-content">
+        <h3 class="modal-title">Изменение никнейма</h3>
+        <div class="modal-body">
+          <input type="text" id="newNickname" class="modal-input" placeholder="Новый никнейм" maxlength="20" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary" onclick="buyNickname()">Изменить</button>
+          <button type="button" class="btn btn-secondary" onclick="hideNicknameForm()">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="rouletteModal" class="modal modal-roulette hidden">
+      <div class="modal-overlay" onclick="closeRoulette()"></div>
+      <div class="modal-content modal-roulette-content">
+        <div class="roulette-wrapper">
+          <div class="roulette-pointer"></div>
+          <canvas id="rouletteCanvas" width="300" height="300"></canvas>
+        </div>
+
+        <button id="spinButton" class="btn btn-primary btn-large" onclick="spinRoulette()">
+          Крутить
+        </button>
+
+        <div id="rouletteResult" class="roulette-result hidden"></div>
+
+        <div class="prize-list">
+          <h4 class="prize-list-title">Список призов:</h4>
+          <ul id="prizeList"></ul>
+        </div>
+
+        <button class="btn btn-secondary btn-large" onclick="closeRoulette()">Закрыть</button>
+      </div>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+    
+    <div id="loading" class="loading-overlay hidden">
+      <div class="loading-spinner"></div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
