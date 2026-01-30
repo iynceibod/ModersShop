@@ -45,9 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function buyDirect(item, cost, name) {
-    console.log('Покупка:', { item, cost, name });
-    
-    showNotification(`✅ Покупка "${name}"...`, 'success');
     
     showLoading();
     setTimeout(() => {
@@ -111,7 +108,6 @@ function buyPersonalRole() {
         return;
     }
     
-    showNotification(`✅ Запрос на создание роли "${roleName}" отправлен`, 'success');
     showLoading();
     
     setTimeout(() => {
@@ -199,4 +195,5 @@ function showNotification(message, type = "success") {
         notificationElement.classList.remove("hidden");
         setTimeout(() => notificationElement.classList.add("hidden"), 3000);
     }
+
 }
