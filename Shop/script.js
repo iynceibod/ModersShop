@@ -19,11 +19,6 @@ function hideLoading() {
 
 function buyDirect(item, cost, name) {
     currentPurchase = { item, cost, name };
-    
-    if (balls < cost) {
-        showNotification(`❌ Недостаточно баллов`, "error");
-        return;
-    }
 
     const confirmMessage = document.getElementById('confirmMessage');
     const modal = document.getElementById('confirmModal');
@@ -527,5 +522,6 @@ function renderPrizeList() {
         `)
         .join("");
 }
+
 
 
