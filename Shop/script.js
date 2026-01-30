@@ -20,30 +20,31 @@ function hideLoading() {
 function buyDirect(item, cost, name) {
     currentPurchase = { item, cost, name };
     
+    if (balls < cost) {
+        showNotification(`❌ Недостаточно баллов`, "error");
+        return;
+    }
+
     const confirmMessage = document.getElementById('confirmMessage');
     const modal = document.getElementById('confirmModal');
     
     if (confirmMessage && modal) {
-        confirmMessage.textContent = `Вы действительно хотите купить "${name}" за ${cost} баллов?`;
+        confirmMessage.textContent = `Купить "${name}" за ${cost} баллов?`;
         modal.classList.remove('hidden');
     }
 }
 
 function hideConfirmModal() {
-    const modal = document.getElementById('confirmModal');
-    if (modal) {
-        modal.classList.add('hidden');
-    }
+    document.getElementById('confirmModal').classList.add('hidden');
     currentPurchase = null;
 }
-
 function processPurchase() {
     if (!currentPurchase) return;
 
     const { item, cost } = currentPurchase;
     
-    hideConfirmModal(); 
-    showLoading();      
+    hideConfirmModal();
+    showLoading();
     
     setTimeout(() => {
         try {
@@ -56,7 +57,7 @@ function processPurchase() {
         } finally {
             hideLoading();
         }
-    }, 400);
+    }, 500);
 }
 
 function showNotification(message, type = "error") {
@@ -526,4 +527,5 @@ function renderPrizeList() {
         `)
         .join("");
 }
+
 
