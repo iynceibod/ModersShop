@@ -349,4 +349,11 @@ body {
   .header-title {
     font-size: 18px;
   }
+
+}
+
+
+.icon-warn {
+    width: 28px;
+    height: 28px;
 }
