@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Магазин модерации</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<main class="app">
+    <div class="container">
+        
+        <header class="header">
+            <h1 class="header-title">МАГАЗИН МОДЕРАЦИИ</h1>
+            <div class="header-balance">
+                <span class="balance-label">Ваш баланс:</span>
+                <span id="user-balls" class="balance-value">Загрузка...</span>
+            </div>
+        </header>
+
+        <section class="shop-section">
+            <div class="shop-grid">
+                <button type="button" class="shop-card" onclick="buyDirect('remove_verbal_warn', 65, 'Снятие устного выговора')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-comment-slash"></i>
+                    </div>
+                    <h3 class="card-title">Снятие предупреждения</h3>
+                    <div class="card-price">65 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('remove_strict_warn', 130, 'Снятие строгого выговора')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="card-title">Снятие выговора</h3>
+                    <div class="card-price">130 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('3000_exp', 20, '3.000 опыта')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="card-title">3.000 опыта в боте</h3>
+                    <div class="card-price">20 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('50000_coins', 20, '50.000 монет')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h3 class="card-title">50.000 монет в боте</h3>
+                    <div class="card-price">20 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="showRoleForm()">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user-tag"></i>
+                    </div>
+                    <h3 class="card-title">Личная роль на 30 дней</h3>
+                    <div class="card-price">300 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="showChannelForm()">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-headphones"></i>
+                    </div>
+                    <h3 class="card-title">Личный канал на 30 дней</h3>
+                    <div class="card-price">300 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('extend_personal_role', 230, 'Продление личной роли')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-user-clock"></i>
+                    </div>
+                    <h3 class="card-title">Продление личной роли</h3>
+                    <div class="card-price">230 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('extend_personal_channel', 230, 'Продление личного канала')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-headphones-alt"></i>
+                    </div>
+                    <h3 class="card-title">Продление личного канала</h3>
+                    <div class="card-price">230 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('extend_family', 500, 'Продление семьи')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="card-title">Продление семьи</h3>
+                    <div class="card-price">500 баллов</div>
+                </button>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<div id="roleForm" class="modal hidden">
+    <div class="modal-overlay" onclick="hideRoleForm()"></div>
+    <div class="modal-content">
+        <h3 class="modal-title">Создание личной роли</h3>
+        <div class="modal-body">
+            <input type="text" id="roleName" class="modal-input" placeholder="Название роли" maxlength="30" />
+            <input type="text" id="roleColor" class="modal-input" placeholder="Цвет роли (#RRGGBB)" maxlength="7" />
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" onclick="buyPersonalRole()">Создать</button>
+            <button type="button" class="btn btn-secondary" onclick="hideRoleForm()">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<div id="channelForm" class="modal hidden">
+    <div class="modal-overlay" onclick="hideChannelForm()"></div>
+    <div class="modal-content">
+        <h3 class="modal-title">Создание личного канала</h3>
+        <div class="modal-body">
+            <input type="text" id="channelName" class="modal-input" placeholder="Название канала" maxlength="30" />
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" onclick="buyPersonalChannel()">Создать</button>
+            <button type="button" class="btn btn-secondary" onclick="hideChannelForm()">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<div id="notification" class="notification hidden"></div>
+
+<div id="loading" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
