@@ -101,6 +101,20 @@
     </div>
 </main>
 
+    <div id="confirmModal" class="modal hidden">
+    <div class="modal-overlay" onclick="hideConfirmModal()"></div>
+    <div class="modal-content">
+        <h3 class="modal-title">Подтверждение</h3>
+        <div class="modal-body">
+            <p id="confirmMessage" style="text-align: center; color: #fff;"></p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" onclick="processPurchase()">Купить</button>
+            <button type="button" class="btn btn-secondary" onclick="hideConfirmModal()">Отмена</button>
+        </div>
+    </div>
+    </div>
+
 <div id="roleForm" class="modal hidden">
     <div class="modal-overlay" onclick="hideRoleForm()"></div>
     <div class="modal-content">
@@ -140,6 +154,7 @@
 </body>
 
 </html>
+
 
 
 
