@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Магазин модерации</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<main class="app">
+    <div class="container">
+        
+        <header class="header">
+            <h1 class="header-title">МАГАЗИН МОДЕРАЦИИ</h1>
+            <div class="header-balance">
+                <span class="balance-label">Ваш баланс:</span>
+                <span id="user-balls" class="balance-value">Загрузка...</span>
+            </div>
+        </header>
+
+        <section class="shop-section">
+            <div class="shop-grid">
+                <button type="button" class="shop-card" onclick="buyDirect('remove_verbal_warn', 65, 'Снятие предупреждения')">
+                    <div class="card-icon">
+                        <img src="img/pred.svg" alt="" />
+                    </div>
+                    <h3 class="card-title">Снятие предупреждения</h3>
+                    <div class="card-price">65 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('remove_strict_warn', 130, 'Снятие выговора')">
+                    <div class="card-icon">
+                        <img src="img/warn.svg" class="icon-warn" alt="" />
+                    </div>
+                    <h3 class="card-title">Снятие выговора</h3>
+                    <div class="card-price">130 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('3000_exp', 10, '3.000 опыта')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">3.000 опыта</h3>
+                    <div class="card-price">10 баллов</div>
+                </button>
+
+                <button type="button" class="shop-card" onclick="buyDirect('reduce_promotion_cooldown', 30, 'Сокращение срока повышения на 3 дня')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calendar-minus"></i>
+                    </div>
+                    <h3 class="card-title">Сокращение срока повышения на 3 дня</h3>
+                    <div class="card-price">30 баллов</div>
+                </button>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+    <div id="confirmModal" class="modal hidden">
+    <div class="modal-overlay" onclick="hideConfirmModal()"></div>
+    <div class="modal-content">
+        <h3 class="modal-title">Подтверждение</h3>
+        <div class="modal-body">
+            <p id="confirmMessage" style="text-align: center; color: #fff;"></p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-primary" onclick="processPurchase()">Купить</button>
+            <button type="button" class="btn btn-secondary" onclick="hideConfirmModal()">Отмена</button>
+        </div>
+    </div>
+    </div>
+
+<div id="notification" class="notification hidden"></div>
+
+<div id="loading" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
