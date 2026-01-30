@@ -1,6 +1,7 @@
 const tg = window.Telegram.WebApp;
 const urlParams = new URLSearchParams(window.location.search);
 const balls = urlParams.get("balls");
+let currentPurchase = null;
 
 document.getElementById("user-balls").innerText = balls ? `${balls} баллов` : "Недоступно";
 
@@ -14,6 +15,48 @@ function showLoading() {
 }
 function hideLoading() {
   document.getElementById("loading").classList.add("hidden");
+}
+
+function buyDirect(item, cost, name) {
+    currentPurchase = { item, cost, name };
+    
+    const confirmMessage = document.getElementById('confirmMessage');
+    const modal = document.getElementById('confirmModal');
+    
+    if (confirmMessage && modal) {
+        confirmMessage.textContent = `Вы действительно хотите купить "${name}" за ${cost} баллов?`;
+        modal.classList.remove('hidden');
+    }
+}
+
+function hideConfirmModal() {
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    currentPurchase = null;
+}
+
+function processPurchase() {
+    if (!currentPurchase) return;
+
+    const { item, cost } = currentPurchase;
+    
+    hideConfirmModal(); 
+    showLoading();      
+    
+    setTimeout(() => {
+        try {
+            tg.sendData(JSON.stringify({
+                type: "shop_purchase",
+                item: item,
+                cost: cost
+            }));
+        } catch (e) {
+        } finally {
+            hideLoading();
+        }
+    }, 400);
 }
 
 function showNotification(message, type = "error") {
@@ -483,14 +526,4 @@ function renderPrizeList() {
         `)
         .join("");
 }
-
-
-
-
-
-
-
-
-
-
 
