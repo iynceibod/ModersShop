@@ -1,135 +1,119 @@
 const tg = window.Telegram.WebApp;
 const urlParams = new URLSearchParams(window.location.search);
 const balls = urlParams.get("balls");
+
 let currentPurchase = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('DOM fully loaded');
-    
+    console.log("DOM fully loaded");
+
     const balanceElement = document.getElementById("user-balls");
     if (balanceElement) {
         balanceElement.textContent = balls ? `${balls} баллов` : "Недоступно";
     }
-    
+
     try {
         tg.ready();
         tg.expand();
-        tg.setBackgroundColor('#050505');
-        console.log('Telegram WebApp initialized');
-    } catch (error) {
-        console.error('Error initializing Telegram WebApp:', error);
+        tg.setBackgroundColor("#050505");
+        console.log("Telegram WebApp initialized");
+    } catch (e) {
+        console.error("Telegram init error", e);
     }
-    
-    const roleNameInput = document.getElementById('roleName');
+
+    const roleNameInput = document.getElementById("roleName");
     if (roleNameInput) {
-        roleNameInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const roleColorInput = document.getElementById('roleColor');
-                if (roleColorInput) roleColorInput.focus();
+        roleNameInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                document.getElementById("roleColor")?.focus();
             }
         });
     }
-    
-    const roleColorInput = document.getElementById('roleColor');
+
+    const roleColorInput = document.getElementById("roleColor");
     if (roleColorInput) {
-        roleColorInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') buyPersonalRole();
+        roleColorInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") buyPersonalRole();
         });
     }
-    
-    const channelNameInput = document.getElementById('channelName');
+
+    const channelNameInput = document.getElementById("channelName");
     if (channelNameInput) {
-        channelNameInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') buyPersonalChannel();
+        channelNameInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") buyPersonalChannel();
+        });
+    }
+
+    const expInput = document.getElementById("expExchangeAmount");
+    if (expInput) {
+        expInput.addEventListener("input", updateExpExchangeResult);
+        expInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") buyExpExchange();
         });
     }
 });
 
-    const expExchangeInput = document.getElementById('expExchangeAmount');
-    if (expExchangeInput) {
-        expExchangeInput.addEventListener('input', function() {
-            updateExpExchangeResult();
-        });
-        
-        expExchangeInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                buyExpExchange();
-            }
-        });
-    }
-});
 
 function buyDirect(item, cost, name) {
-    currentPurchase = { item, cost, name }; 
-    
-    const confirmMessage = document.getElementById('confirmMessage');
-    const modal = document.getElementById('confirmModal');
-    
-    if (confirmMessage && modal) {
-        confirmMessage.textContent = `Вы действительно хотите купить "${name}" за ${cost} баллов?`;
-        modal.classList.remove('hidden');
+    currentPurchase = { item, cost, name };
+
+    const modal = document.getElementById("confirmModal");
+    const text = document.getElementById("confirmMessage");
+
+    if (modal && text) {
+        text.textContent = `Вы действительно хотите купить «${name}» за ${cost} баллов?`;
+        modal.classList.remove("hidden");
     }
 }
 
+function processPurchase() {
+    if (!currentPurchase) return;
+
+    hideConfirmModal();
+    showLoading();
+
+    setTimeout(() => {
+        tg.sendData(JSON.stringify({
+            type: "shop_purchase",
+            item: currentPurchase.item,
+            cost: currentPurchase.cost
+        }));
+        hideLoading();
+    }, 400);
+}
+
+function hideConfirmModal() {
+    document.getElementById("confirmModal")?.classList.add("hidden");
+    currentPurchase = null;
+}
+
+
 function showRoleForm() {
-    console.log('Открытие формы для роли');
-    const modal = document.getElementById('roleForm');
-    if (modal) {
-        modal.classList.remove('hidden');
-        const roleNameInput = document.getElementById('roleName');
-        if (roleNameInput) roleNameInput.focus();
-    }
+    document.getElementById("roleForm")?.classList.remove("hidden");
+    document.getElementById("roleName")?.focus();
 }
 
 function hideRoleForm() {
-    const modal = document.getElementById('roleForm');
-    if (modal) {
-        modal.classList.add('hidden');
-        const roleNameInput = document.getElementById('roleName');
-        const roleColorInput = document.getElementById('roleColor');
-        if (roleNameInput) roleNameInput.value = '';
-        if (roleColorInput) roleColorInput.value = '';
-    }
+    document.getElementById("roleForm")?.classList.add("hidden");
+    document.getElementById("roleName").value = "";
+    document.getElementById("roleColor").value = "";
 }
 
 function buyPersonalRole() {
-    console.log('Покупка личной роли');
-    
-    const roleNameInput = document.getElementById('roleName');
-    const roleColorInput = document.getElementById('roleColor');
-    
-    if (!roleNameInput || !roleColorInput) {
-        showNotification('❌ Форма не найдена');
-        return;
-    }
-    
-    const roleName = roleNameInput.value.trim();
-    const roleColor = roleColorInput.value.trim();
-    
-    if (!roleName) {
-        showNotification('❌ Введите название роли');
-        return;
-    }
-    
-    if (!roleColor) {
-        showNotification('❌ Введите цвет роли');
-        return;
-    }
-    
-    const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    if (!colorRegex.test(roleColor)) {
-        showNotification('❌ Неверный формат цвета. Используйте формат #RRGGBB');
-        return;
-    }
-    
+    const name = document.getElementById("roleName").value.trim();
+    const color = document.getElementById("roleColor").value.trim();
+
+    if (!name) return showNotification("❌ Введите название роли");
+    if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color))
+        return showNotification("❌ Цвет в формате #RRGGBB");
+
     showLoading();
-    
     setTimeout(() => {
         tg.sendData(JSON.stringify({
             type: "shop_purchase",
             item: "personal_role_30",
-            roleName: roleName,
-            roleColor: roleColor,
+            roleName: name,
+            roleColor: color,
             cost: 300
         }));
         hideLoading();
@@ -137,49 +121,27 @@ function buyPersonalRole() {
     }, 500);
 }
 
+
 function showChannelForm() {
-    console.log('Открытие формы для канала');
-    const modal = document.getElementById('channelForm');
-    if (modal) {
-        modal.classList.remove('hidden');
-        const channelNameInput = document.getElementById('channelName');
-        if (channelNameInput) channelNameInput.focus();
-    }
+    document.getElementById("channelForm")?.classList.remove("hidden");
+    document.getElementById("channelName")?.focus();
 }
 
 function hideChannelForm() {
-    const modal = document.getElementById('channelForm');
-    if (modal) {
-        modal.classList.add('hidden');
-        const channelNameInput = document.getElementById('channelName');
-        if (channelNameInput) channelNameInput.value = '';
-    }
+    document.getElementById("channelForm")?.classList.add("hidden");
+    document.getElementById("channelName").value = "";
 }
 
 function buyPersonalChannel() {
-    console.log('Покупка личного канала');
-    
-    const channelNameInput = document.getElementById('channelName');
-    if (!channelNameInput) {
-        showNotification('❌ Форма не найдена');
-        return;
-    }
-    
-    const channelName = channelNameInput.value.trim();
-    
-    if (!channelName) {
-        showNotification('❌ Введите название канала');
-        return;
-    }
-    
-    showNotification(`✅ Запрос на создание канала "${channelName}" отправлен`, 'success');
+    const name = document.getElementById("channelName").value.trim();
+    if (!name) return showNotification("❌ Введите название канала");
+
     showLoading();
-    
     setTimeout(() => {
         tg.sendData(JSON.stringify({
             type: "shop_purchase",
             item: "personal_channel_30",
-            channelName: channelName,
+            channelName: name,
             cost: 300
         }));
         hideLoading();
@@ -187,45 +149,43 @@ function buyPersonalChannel() {
     }, 500);
 }
 
+
 function updateExpExchangeResult() {
-    const amount = parseInt(document.getElementById('expExchangeAmount').value) || 0;
-    const resultElement = document.getElementById('expExchangeResult');
-    
+    const amount = parseInt(document.getElementById("expExchangeAmount").value) || 0;
+    const result = document.getElementById("expExchangeResult");
+
+    if (!result) return;
+
     if (amount < 20) {
-        resultElement.textContent = "❌ Минимум 20 баллов";
-        resultElement.className = "exchange-result-mini error-result";
-        resultElement.classList.remove("hidden");
+        result.textContent = "❌ Минимум 20 баллов";
+        result.className = "exchange-result error-result";
+        result.classList.remove("hidden");
         return;
     }
-    
+
     if (amount % 20 !== 0) {
-        resultElement.textContent = "❌ Кратно 20 баллам";
-        resultElement.className = "exchange-result-mini error-result";
-        resultElement.classList.remove("hidden");
+        result.textContent = "❌ Должно быть кратно 20";
+        result.className = "exchange-result error-result";
+        result.classList.remove("hidden");
         return;
     }
-    
-    const exp = amount * 150; 
-    resultElement.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
-    resultElement.className = "exchange-result-mini success-result";
-    resultElement.classList.remove("hidden");
+
+    const exp = amount * 150;
+    result.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
+    result.className = "exchange-result success-result";
+    result.classList.remove("hidden");
 }
 
 function buyExpExchange() {
-    const amount = parseInt(document.getElementById('expExchangeAmount').value);
-    
-    if (!amount || amount < 20) {
-        showNotification("❌ Минимум 20 баллов для обмена");
-        return;
-    }
-    
-    if (amount % 20 !== 0) {
-        showNotification("❌ Количество баллов должно быть кратно 20");
-        return;
-    }
-    
+    const amount = parseInt(document.getElementById("expExchangeAmount").value);
+
+    if (!amount || amount < 20)
+        return showNotification("❌ Минимум 20 баллов");
+
+    if (amount % 20 !== 0)
+        return showNotification("❌ Количество должно быть кратно 20");
+
     showLoading();
-    
     setTimeout(() => {
         tg.sendData(JSON.stringify({
             type: "shop_purchase",
@@ -234,66 +194,26 @@ function buyExpExchange() {
             cost: amount
         }));
         hideLoading();
-        showNotification(`✅ Запрос на обмен ${amount} баллов отправлен`, 'success');
+        showNotification("✅ Запрос на обмен отправлен");
     }, 500);
 }
 
+
 function showLoading() {
-    const loadingElement = document.getElementById("loading");
-    if (loadingElement) {
-        loadingElement.classList.remove("hidden");
-    }
+    document.getElementById("loading")?.classList.remove("hidden");
 }
-
-function processPurchase() {
-    if (!currentPurchase) return;
-
-    const { item, cost } = currentPurchase;
-    
-    hideConfirmModal();
-    showLoading();      
-    
-    setTimeout(() => {
-        try {
-            tg.sendData(JSON.stringify({
-                type: "shop_purchase",
-                item: item,
-                cost: cost
-            }));
-            showNotification('✅ Запрос отправлен!');
-        } catch (e) {
-            showNotification('❌ Ошибка при отправке данных');
-        } finally {
-            hideLoading();
-        }
-    }, 400);
-}
-
-
 
 function hideLoading() {
-    const loadingElement = document.getElementById("loading");
-    if (loadingElement) {
-        loadingElement.classList.add("hidden");
-    }
+    document.getElementById("loading")?.classList.add("hidden");
 }
 
-function hideConfirmModal() {
-    const modal = document.getElementById('confirmModal');
-    if (modal) {
-        modal.classList.add('hidden');
-    }
-    currentPurchase = null;
+function showNotification(text, type = "success") {
+    const n = document.getElementById("notification");
+    if (!n) return;
+
+    n.textContent = text;
+    n.className = `notification ${type}`;
+    n.classList.remove("hidden");
+
+    setTimeout(() => n.classList.add("hidden"), 3000);
 }
-function showNotification(message, type = "success") {
-    const notificationElement = document.getElementById("notification");
-    if (notificationElement) {
-        notificationElement.textContent = message;
-        notificationElement.className = `notification ${type}`;
-        notificationElement.classList.remove("hidden");
-        setTimeout(() => notificationElement.classList.add("hidden"), 3000);
-    }
-
-}
-
-
