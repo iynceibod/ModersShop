@@ -40,14 +40,6 @@
                     <div class="card-price">130 баллов</div>
                 </button>
 
-                <button type="button" class="shop-card" onclick="buyDirect('3000_exp', 20, '3.000 опыта')">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <h3 class="card-title">3.000 опыта в боте</h3>
-                    <div class="card-price">20 баллов</div>
-                </button>
-
                 <button type="button" class="shop-card" onclick="buyDirect('50000_coins', 20, '50.000 монет')">
                     <div class="card-icon">
                         <i class="fa-solid fa-coins"></i>
@@ -97,7 +89,18 @@
                 </button>
             </div>
         </section>
-
+                <div class="shop-card shop-card-exchange">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">ОБМЕНЯТЬ БАЛЛЫ НА ОПЫТ</h3>
+                    <div class="exchange-mini-form">
+                        <div class="exchange-rate">20 баллов = 3000 опыта</div>
+                        <input type="number" id="expExchangeAmount" class="exchange-mini-input" placeholder="Баллы" min="20" step="20" />
+                        <button type="button" class="btn-exchange-small" onclick="buyExpExchange()">Обменять</button>
+                    </div>
+                    <div id="expExchangeResult" class="exchange-result-mini hidden"></div>
+                </div>
     </div>
 </main>
 
@@ -154,6 +157,7 @@
 </body>
 
 </html>
+
 
 
 
