@@ -357,3 +357,63 @@ body {
     width: 28px;
     height: 28px;
 }
+
+.exchange-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+}
+.exchange-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.exchange-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color var(--transition);
+}
+
+.exchange-input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.exchange-input::placeholder {
+  color: var(--text-dim);
+}
+
+.exchange-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.exchange-result {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.exchange-result.success-result {
+  background: rgba(63, 123, 255, 0.1);
+  border: 1px solid rgba(63, 123, 255, 0.3);
+  color: var(--blue);
+}
+
+.exchange-result.error-result {
+  background: rgba(218, 54, 51, 0.1);
+  border: 1px solid rgba(218, 54, 51, 0.3);
+  color: var(--error);
+}
+
