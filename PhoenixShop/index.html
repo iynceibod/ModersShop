@@ -89,18 +89,18 @@
                 </button>
             </div>
         </section>
-                <div class="shop-card shop-card-exchange">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-bolt"></i>
+            <section class="exchange-section">
+                <h2 class="section-title">Обменять баллы на опыт</h2>
+                <div class="exchange-form">
+                    <input type="number" id="exchangeAmount" class="exchange-input" placeholder="Количество баллов" min="10" />
+                    <div class="exchange-actions">
+                        <button type="button" class="btn btn-secondary" onclick="calculateExchange()">Рассчитать</button>
+                        <button type="button" class="btn btn-primary" onclick="buyExchange()">Обменять</button>
                     </div>
-                    <h3 class="card-title">ОБМЕНЯТЬ БАЛЛЫ НА ОПЫТ</h3>
-                    <div class="exchange-mini-form">
-                        <div class="exchange-rate">20 баллов = 3000 опыта</div>
-                        <input type="number" id="expExchangeAmount" class="exchange-mini-input" placeholder="Баллы" min="20" step="20" />
-                        <button type="button" class="btn-exchange-small" onclick="buyExpExchange()">Обменять</button>
-                    </div>
-                    <div id="expExchangeResult" class="exchange-result-mini hidden"></div>
                 </div>
+                <div id="exchangeResult" class="exchange-result hidden"></div>
+            </section>
+        </div>
     </div>
 </main>
 
@@ -157,6 +157,7 @@
 </body>
 
 </html>
+
 
 
 
