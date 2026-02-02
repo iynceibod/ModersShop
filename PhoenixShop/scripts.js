@@ -44,6 +44,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+    const expExchangeInput = document.getElementById('expExchangeAmount');
+    if (expExchangeInput) {
+        expExchangeInput.addEventListener('input', function() {
+            updateExpExchangeResult();
+        });
+        
+        expExchangeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buyExpExchange();
+            }
+        });
+    }
+});
+
 function buyDirect(item, cost, name) {
     currentPurchase = { item, cost, name }; 
     
@@ -172,6 +187,57 @@ function buyPersonalChannel() {
     }, 500);
 }
 
+function updateExpExchangeResult() {
+    const amount = parseInt(document.getElementById('expExchangeAmount').value) || 0;
+    const resultElement = document.getElementById('expExchangeResult');
+    
+    if (amount < 20) {
+        resultElement.textContent = "❌ Минимум 20 баллов";
+        resultElement.className = "exchange-result-mini error-result";
+        resultElement.classList.remove("hidden");
+        return;
+    }
+    
+    if (amount % 20 !== 0) {
+        resultElement.textContent = "❌ Кратно 20 баллам";
+        resultElement.className = "exchange-result-mini error-result";
+        resultElement.classList.remove("hidden");
+        return;
+    }
+    
+    const exp = amount * 150; 
+    resultElement.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
+    resultElement.className = "exchange-result-mini success-result";
+    resultElement.classList.remove("hidden");
+}
+
+function buyExpExchange() {
+    const amount = parseInt(document.getElementById('expExchangeAmount').value);
+    
+    if (!amount || amount < 20) {
+        showNotification("❌ Минимум 20 баллов для обмена");
+        return;
+    }
+    
+    if (amount % 20 !== 0) {
+        showNotification("❌ Количество баллов должно быть кратно 20");
+        return;
+    }
+    
+    showLoading();
+    
+    setTimeout(() => {
+        tg.sendData(JSON.stringify({
+            type: "shop_purchase",
+            item: "exchange_exp",
+            amount: amount,
+            cost: amount
+        }));
+        hideLoading();
+        showNotification(`✅ Запрос на обмен ${amount} баллов отправлен`, 'success');
+    }, 500);
+}
+
 function showLoading() {
     const loadingElement = document.getElementById("loading");
     if (loadingElement) {
@@ -229,4 +295,5 @@ function showNotification(message, type = "success") {
     }
 
 }
+
 
