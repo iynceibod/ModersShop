@@ -417,3 +417,12 @@ body {
   color: var(--error);
 }
 
+.section-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
