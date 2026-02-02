@@ -40,14 +40,6 @@
                     <div class="card-price">130 баллов</div>
                 </button>
 
-                <button type="button" class="shop-card" onclick="buyDirect('3000_exp', 10, '3.000 опыта')">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <h3 class="card-title">3.000 опыта в боте</h3>
-                    <div class="card-price">10 баллов</div>
-                </button>
-
                 <button type="button" class="shop-card" onclick="buyDirect('reduce_promotion_cooldown', 30, 'Сокращение срока повышения на 3 дня')">
                     <div class="card-icon">
                         <i class="fa-solid fa-calendar-minus"></i>
@@ -56,6 +48,19 @@
                     <div class="card-price">30 баллов</div>
                 </button>
             </div>
+        </section>
+
+    </div>
+        <section class="exchange-section">
+            <h2 class="section-title">Обменять баллы на опыт</h2>
+            <div class="exchange-form">
+                <input type="number" id="exchangeAmount" class="exchange-input" placeholder="Количество баллов" min="20" />
+                <div class="exchange-actions">
+                    <button type="button" class="btn btn-secondary" onclick="calculateExchange()">Рассчитать</button>
+                    <button type="button" class="btn btn-primary" onclick="buyExchange()">Обменять</button>
+                </div>
+            </div>
+            <div id="exchangeResult" class="exchange-result hidden"></div>
         </section>
 
     </div>
@@ -85,3 +90,4 @@
 </body>
 
 </html>
+
