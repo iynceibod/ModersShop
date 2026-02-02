@@ -19,6 +19,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function calculateExchange() {
+    const amount = parseInt(document.getElementById("exchangeAmount").value);
+    const result = document.getElementById("exchangeResult");
+
+    if (!amount || amount < 20) {
+        result.textContent = "❌ Минимум 20 баллов для обмена";
+        result.className = "exchange-result error-result";
+        result.classList.remove("hidden");
+        return;
+    }
+
+    const exp = amount * 150;
+    result.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
+    result.className = "exchange-result success-result";
+    result.classList.remove("hidden");
+}
+
+function buyExchange() {
+    const amount = parseInt(document.getElementById("exchangeAmount").value);
+    if (!amount || amount < 20) {
+        showNotification("❌ Минимум 20 баллов для обмена");
+        return;
+    }
+
+    const balanceElement = document.getElementById("user-balls");
+    const balanceText = balanceElement.textContent;
+    const balance = parseInt(balanceText) || 0;
+    if (amount > balance) {
+        showNotification("❌ Недостаточно баллов");
+        return;
+    }
+
+    const exp = amount * 150;
+
+    currentPurchase = { 
+        item: "exchange_exp", 
+        amount: amount, 
+        cost: amount 
+    };
+
+    const confirmMessage = document.getElementById('confirmMessage');
+    const modal = document.getElementById('confirmModal');
+
+    if (confirmMessage && modal) {
+        confirmMessage.textContent = `Вы действительно хотите обменять ${amount} баллов на ${exp.toLocaleString("ru-RU")} опыта?`;
+        modal.classList.remove('hidden');
+    }
+}
+
 function buyDirect(item, cost, name) {
     currentPurchase = { item, cost, name }; 
     
@@ -42,18 +91,27 @@ function hideConfirmModal() {
 function processPurchase() {
     if (!currentPurchase) return;
 
-    const { item, cost } = currentPurchase;
-    
     hideConfirmModal();
     showLoading();      
-    
+
     setTimeout(() => {
         try {
-            tg.sendData(JSON.stringify({
-                type: "shop_purchase",
-                item: item,
-                cost: cost
-            }));
+            let sendData;
+            if (currentPurchase.item === "exchange_exp") {
+                sendData = {
+                    type: "shop_purchase",
+                    item: currentPurchase.item,
+                    amount: currentPurchase.amount,
+                    cost: currentPurchase.amount
+                };
+            } else {
+                sendData = {
+                    type: "shop_purchase",
+                    item: currentPurchase.item,
+                    cost: currentPurchase.cost
+                };
+            }
+            tg.sendData(JSON.stringify(sendData));
         } catch (e) {
         } finally {
             hideLoading();
