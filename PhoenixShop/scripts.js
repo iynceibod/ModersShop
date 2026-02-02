@@ -16,47 +16,72 @@ document.addEventListener("DOMContentLoaded", () => {
         tg.ready();
         tg.expand();
         tg.setBackgroundColor("#050505");
-        console.log("Telegram WebApp initialized");
     } catch (e) {
         console.error("Telegram init error", e);
     }
 
-    const roleNameInput = document.getElementById("roleName");
-    if (roleNameInput) {
-        roleNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                document.getElementById("roleColor")?.focus();
-            }
-        });
-    }
+    document.getElementById("roleName")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") document.getElementById("roleColor")?.focus();
+    });
 
-    const roleColorInput = document.getElementById("roleColor");
-    if (roleColorInput) {
-        roleColorInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") buyPersonalRole();
-        });
-    }
+    document.getElementById("roleColor")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") buyPersonalRole();
+    });
 
-    const channelNameInput = document.getElementById("channelName");
-    if (channelNameInput) {
-        channelNameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") buyPersonalChannel();
-        });
-    }
+    document.getElementById("channelName")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") buyPersonalChannel();
+    });
 
-    const expInput = document.getElementById("expExchangeAmount");
+    const expInput = document.getElementById("exchangeAmount");
     if (expInput) {
-        expInput.addEventListener("input", updateExpExchangeResult);
+        expInput.addEventListener("input", calculateExchange);
         expInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") buyExpExchange();
+            if (e.key === "Enter") buyExchange();
         });
     }
 });
 
 
+function calculateExchange() {
+    const amountInput = document.getElementById("exchangeAmount");
+    const result = document.getElementById("exchangeResult");
+    const amount = parseInt(amountInput.value) || 0;
+
+    if (!result) return;
+    result.classList.remove("hidden");
+
+    if (amount < 20) {
+        result.textContent = "❌ Минимум 20 баллов";
+        result.className = "exchange-result error-result";
+    } else if (amount % 20 !== 0) {
+        result.textContent = "❌ Должно быть кратно 20";
+        result.className = "exchange-result error-result";
+    } else {
+        const exp = amount * 150;
+        result.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
+        result.className = "exchange-result success-result";
+    }
+}
+
+function buyExchange() {
+    const amount = parseInt(document.getElementById("exchangeAmount").value);
+
+    if (!amount || amount < 20) return showNotification("❌ Минимум 20 баллов", "error");
+
+    showLoading();
+    setTimeout(() => {
+        tg.sendData(JSON.stringify({
+            type: "shop_purchase",
+            item: "exchange_exp",
+            amount: amount,
+            cost: amount
+        }));
+        hideLoading();
+    }, 500);
+}
+
 function buyDirect(item, cost, name) {
     currentPurchase = { item, cost, name };
-
     const modal = document.getElementById("confirmModal");
     const text = document.getElementById("confirmMessage");
 
@@ -68,7 +93,6 @@ function buyDirect(item, cost, name) {
 
 function processPurchase() {
     if (!currentPurchase) return;
-
     hideConfirmModal();
     showLoading();
 
@@ -87,25 +111,15 @@ function hideConfirmModal() {
     currentPurchase = null;
 }
 
-
-function showRoleForm() {
-    document.getElementById("roleForm")?.classList.remove("hidden");
-    document.getElementById("roleName")?.focus();
-}
-
-function hideRoleForm() {
-    document.getElementById("roleForm")?.classList.add("hidden");
-    document.getElementById("roleName").value = "";
-    document.getElementById("roleColor").value = "";
-}
+function showRoleForm() { document.getElementById("roleForm")?.classList.remove("hidden"); }
+function hideRoleForm() { document.getElementById("roleForm")?.classList.add("hidden"); }
 
 function buyPersonalRole() {
     const name = document.getElementById("roleName").value.trim();
     const color = document.getElementById("roleColor").value.trim();
 
-    if (!name) return showNotification("❌ Введите название роли");
-    if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color))
-        return showNotification("❌ Цвет в формате #RRGGBB");
+    if (!name) return showNotification("❌ Введите название для роли", "error");
+    if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)) return showNotification("❌ Цвет в формате #RRGGBB", "error");
 
     showLoading();
     setTimeout(() => {
@@ -122,19 +136,12 @@ function buyPersonalRole() {
 }
 
 
-function showChannelForm() {
-    document.getElementById("channelForm")?.classList.remove("hidden");
-    document.getElementById("channelName")?.focus();
-}
-
-function hideChannelForm() {
-    document.getElementById("channelForm")?.classList.add("hidden");
-    document.getElementById("channelName").value = "";
-}
+function showChannelForm() { document.getElementById("channelForm")?.classList.remove("hidden"); }
+function hideChannelForm() { document.getElementById("channelForm")?.classList.add("hidden"); }
 
 function buyPersonalChannel() {
     const name = document.getElementById("channelName").value.trim();
-    if (!name) return showNotification("❌ Введите название канала");
+    if (!name) return showNotification("❌ Введите название для канала", "error");
 
     showLoading();
     setTimeout(() => {
@@ -149,71 +156,14 @@ function buyPersonalChannel() {
     }, 500);
 }
 
-
-function updateExpExchangeResult() {
-    const amount = parseInt(document.getElementById("expExchangeAmount").value) || 0;
-    const result = document.getElementById("expExchangeResult");
-
-    if (!result) return;
-
-    if (amount < 20) {
-        result.textContent = "❌ Минимум 20 баллов";
-        result.className = "exchange-result error-result";
-        result.classList.remove("hidden");
-        return;
-    }
-
-    if (amount % 20 !== 0) {
-        result.textContent = "❌ Должно быть кратно 20";
-        result.className = "exchange-result error-result";
-        result.classList.remove("hidden");
-        return;
-    }
-
-    const exp = amount * 150;
-    result.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
-    result.className = "exchange-result success-result";
-    result.classList.remove("hidden");
-}
-
-function buyExpExchange() {
-    const amount = parseInt(document.getElementById("expExchangeAmount").value);
-
-    if (!amount || amount < 20)
-        return showNotification("❌ Минимум 20 баллов");
-
-    if (amount % 20 !== 0)
-        return showNotification("❌ Количество должно быть кратно 20");
-
-    showLoading();
-    setTimeout(() => {
-        tg.sendData(JSON.stringify({
-            type: "shop_purchase",
-            item: "exchange_exp",
-            amount: amount,
-            cost: amount
-        }));
-        hideLoading();
-        showNotification("✅ Запрос на обмен отправлен");
-    }, 500);
-}
-
-
-function showLoading() {
-    document.getElementById("loading")?.classList.remove("hidden");
-}
-
-function hideLoading() {
-    document.getElementById("loading")?.classList.add("hidden");
-}
+function showLoading() { document.getElementById("loading")?.classList.remove("hidden"); }
+function hideLoading() { document.getElementById("loading")?.classList.add("hidden"); }
 
 function showNotification(text, type = "success") {
     const n = document.getElementById("notification");
     if (!n) return;
-
     n.textContent = text;
     n.className = `notification ${type}`;
     n.classList.remove("hidden");
-
     setTimeout(() => n.classList.add("hidden"), 3000);
 }
