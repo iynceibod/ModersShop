@@ -37,18 +37,18 @@
                 <button type="button" class="shop-card"
                         onclick="buyDirect('remove_strict_warn', 130, 'Снятие строгого выговора')">
                     <div class="card-icon">
-                        <img src="img/warn.svg" alt="">
+                        <img src="img/warn.svg" class="icon-warn" alt="">
                     </div>
                     <h3 class="card-title">Снятие выговора</h3>
                     <div class="card-price">130 баллов</div>
                 </button>
 
                 <button type="button" class="shop-card"
-                        onclick="buyDirect('50000_coins', 20, '50 000 монет')">
+                        onclick="buyDirect('50000_coins', 20, '50.000 монет')">
                     <div class="card-icon">
                         <i class="fa-solid fa-coins"></i>
                     </div>
-                    <h3 class="card-title">50 000 монет</h3>
+                    <h3 class="card-title">50.000 монет в боте</h3>
                     <div class="card-price">20 баллов</div>
                 </button>
 
@@ -56,7 +56,7 @@
                     <div class="card-icon">
                         <i class="fa-solid fa-user-tag"></i>
                     </div>
-                    <h3 class="card-title">Личная роль (30 дней)</h3>
+                    <h3 class="card-title">Личная роль на 30 дней</h3>
                     <div class="card-price">300 баллов</div>
                 </button>
 
@@ -64,35 +64,8 @@
                     <div class="card-icon">
                         <i class="fa-solid fa-podcast"></i>
                     </div>
-                    <h3 class="card-title">Личный канал (30 дней)</h3>
+                    <h3 class="card-title">Личный канал на 30 дней</h3>
                     <div class="card-price">300 баллов</div>
-                </button>
-
-                <button type="button" class="shop-card"
-                        onclick="buyDirect('extend_personal_role', 230, 'Продление личной роли')">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-user-clock"></i>
-                    </div>
-                    <h3 class="card-title">Продление личной роли</h3>
-                    <div class="card-price">230 баллов</div>
-                </button>
-
-                <button type="button" class="shop-card"
-                        onclick="buyDirect('extend_personal_channel', 230, 'Продление личного канала')">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-hourglass-half"></i>
-                    </div>
-                    <h3 class="card-title">Продление личного канала</h3>
-                    <div class="card-price">230 баллов</div>
-                </button>
-
-                <button type="button" class="shop-card"
-                        onclick="buyDirect('extend_family', 500, 'Продление семьи')">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <h3 class="card-title">Продление семьи</h3>
-                    <div class="card-price">500 баллов</div>
                 </button>
 
             </div>
@@ -102,21 +75,15 @@
             <h2 class="section-title">Обменять баллы на опыт</h2>
 
             <div class="exchange-form">
-                <input
-                    type="number"
-                    id="exchangeAmount"
-                    class="exchange-input"
-                    placeholder="Количество баллов (мин. 20)"
-                    min="20"
-                >
+                <input type="number"
+                       id="exchangeAmount"
+                       class="exchange-input"
+                       placeholder="Количество баллов"
+                       min="20">
 
                 <div class="exchange-actions">
-                    <button class="btn btn-secondary" onclick="calculateExchange()">
-                        Рассчитать
-                    </button>
-                    <button class="btn btn-primary" onclick="buyExchange()">
-                        Обменять
-                    </button>
+                    <button class="btn btn-secondary" onclick="calculateExchange()">Рассчитать</button>
+                    <button class="btn btn-primary" onclick="buyExchange()">Обменять</button>
                 </div>
             </div>
 
@@ -136,35 +103,6 @@
         <div class="modal-actions">
             <button class="btn btn-primary" onclick="processPurchase()">Купить</button>
             <button class="btn btn-secondary" onclick="hideConfirmModal()">Отмена</button>
-        </div>
-    </div>
-</div>
-
-<div id="roleForm" class="modal hidden">
-    <div class="modal-overlay" onclick="hideRoleForm()"></div>
-    <div class="modal-content">
-        <h3 class="modal-title">Создание личной роли</h3>
-        <div class="modal-body">
-            <input id="roleName" class="modal-input" placeholder="Название роли" maxlength="30">
-            <input id="roleColor" class="modal-input" placeholder="Цвет (#RRGGBB)" maxlength="7">
-        </div>
-        <div class="modal-actions">
-            <button class="btn btn-primary" onclick="buyPersonalRole()">Создать</button>
-            <button class="btn btn-secondary" onclick="hideRoleForm()">Отмена</button>
-        </div>
-    </div>
-</div>
-
-<div id="channelForm" class="modal hidden">
-    <div class="modal-overlay" onclick="hideChannelForm()"></div>
-    <div class="modal-content">
-        <h3 class="modal-title">Создание личного канала</h3>
-        <div class="modal-body">
-            <input id="channelName" class="modal-input" placeholder="Название канала" maxlength="30">
-        </div>
-        <div class="modal-actions">
-            <button class="btn btn-primary" onclick="buyPersonalChannel()">Создать</button>
-            <button class="btn btn-secondary" onclick="hideChannelForm()">Отмена</button>
         </div>
     </div>
 </div>
