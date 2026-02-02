@@ -91,28 +91,33 @@ function hideConfirmModal() {
 function processPurchase() {
     if (!currentPurchase) return;
 
+    const purchaseData = { ...currentPurchase }; 
+
     hideConfirmModal();
     showLoading();      
 
     setTimeout(() => {
         try {
             let sendData;
-            if (currentPurchase.item === "exchange_exp") {
+            if (purchaseData.item === "exchange_exp") {
                 sendData = {
                     type: "shop_purchase",
-                    item: currentPurchase.item,
-                    amount: currentPurchase.amount,
-                    cost: currentPurchase.amount
+                    item: purchaseData.item,
+                    amount: purchaseData.amount,
+                    cost: purchaseData.cost
                 };
             } else {
                 sendData = {
                     type: "shop_purchase",
-                    item: currentPurchase.item,
-                    cost: currentPurchase.cost
+                    item: purchaseData.item,
+                    cost: purchaseData.cost
                 };
             }
+            
             tg.sendData(JSON.stringify(sendData));
+            
         } catch (e) {
+            showNotification("❌ Произошла ошибка при покупке", "error");
         } finally {
             hideLoading();
         }
@@ -142,3 +147,4 @@ function showNotification(message, type = "success") {
         setTimeout(() => notificationElement.classList.add("hidden"), 3000);
     }
 }
+
