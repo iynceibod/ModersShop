@@ -40,17 +40,16 @@
                     <div class="card-price">130 баллов</div>
                 </button>
 
-                <button type="button" class="shop-card" onclick="buyDirect('reduce_promotion_cooldown', 30, 'Сокращение срока повышения на 3 дня')">
+                <button type="button" class="shop-card" onclick="buyDirect('extend_family', 500, 'Продление семьи')">
                     <div class="card-icon">
-                        <i class="fa-solid fa-calendar-minus"></i>
+                        <i class="fa-solid fa-users"></i>
                     </div>
-                    <h3 class="card-title">-3 дня к повышению [1-2 lvl]</h3>
-                    <div class="card-price">30 баллов</div>
+                    <h3 class="card-title">Продление семьи на 6 месяцев</h3>
+                    <div class="card-price">500 баллов</div>
                 </button>
             </div>
         </section>
 
-        <!-- Секция обмена ВНУТРИ контейнера -->
         <section class="exchange-section">
             <h2 class="section-title">Обменять баллы на опыт</h2>
             <div class="exchange-form">
@@ -63,7 +62,7 @@
             <div id="exchangeResult" class="exchange-result hidden"></div>
         </section>
 
-    </div> <!-- Закрывающий тег для .container -->
+    </div> 
 </main>
 
 <div id="confirmModal" class="modal hidden">
@@ -89,3 +88,4 @@
 <script src="scripts.js"></script>
 </body>
 </html>
+
