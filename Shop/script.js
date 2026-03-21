@@ -86,14 +86,14 @@ function calculateExchange() {
   const result = document.getElementById("exchangeResult");
 
   if (!amount || amount < 10) {
-    result.textContent = "❌ Минимум 10 баллов для обмена";
+    result.textContent = "Минимум 10 баллов для обмена";
     result.className = "exchange-result error-result";
     result.classList.remove("hidden");
     return;
   }
 
   const exp = amount * 250;
-  result.textContent = `✅ ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
+  result.textContent = ` ${amount} баллов = ${exp.toLocaleString("ru-RU")} опыта`;
   result.className = "exchange-result success-result";
   result.classList.remove("hidden");
 }
@@ -101,7 +101,7 @@ function calculateExchange() {
 function buyExchange() {
   const amount = parseInt(document.getElementById("exchangeAmount").value);
   if (!amount || amount < 10)
-    return showNotification("❌ Минимум 10 баллов для обмена");
+    return showNotification("Минимум 10 баллов для обмена");
 
   showLoading();
   setTimeout(() => {
@@ -114,6 +114,41 @@ function buyExchange() {
     hideLoading();
   }, 500);
 }
+
+function calculateExchangeVirts() {
+  const amount = parseInt(document.getElementById("exchangeVirtsAmount").value);
+  const result = document.getElementById("exchangeVirtsResult");
+
+  if (!amount || amount < 50) {
+    result.textContent = "Минимум 50 баллов для обмена";
+    result.className = "exchange-result error-result";
+    result.classList.remove("hidden");
+    return;
+  }
+
+  const virts = amount * 200000;
+  result.textContent = `${amount} баллов = ${virts.toLocaleString("ru-RU")} виртов`;
+  result.className = "exchange-result success-result";
+  result.classList.remove("hidden");
+}
+
+function buyExchangeVirts() {
+  const amount = parseInt(document.getElementById("exchangeVirtsAmount").value);
+  if (!amount || amount < 50)
+    return showNotification("Минимум 50 баллов для обмена");
+
+  showLoading();
+  setTimeout(() => {
+    tg.sendData(JSON.stringify({
+      type: "shop_purchase",
+      item: "exchange_virts",
+      amount,
+      cost: amount,
+    }));
+    hideLoading();
+  }, 500);
+}
+
 function showNicknameForm() {
     document.getElementById('nicknameForm').classList.remove('hidden');
     document.getElementById('newNickname').focus();
@@ -127,7 +162,7 @@ function hideNicknameForm() {
 function buyNickname() {
     const nickname = document.getElementById('newNickname').value.trim();
     if (!nickname) {
-        showNotification('❌ Введите новый никнейм');
+        showNotification('Введите новый никнейм');
         return;
     }
     showLoading();
@@ -158,7 +193,7 @@ function buyRole() {
     const roleColor = document.getElementById('roleColor').value.trim();
     
     if (!roleName || !roleColor) {
-        showNotification('❌ Заполните все поля');
+        showNotification('Заполните все поля');
         return;
     }
     
@@ -198,7 +233,6 @@ document.getElementById('roleColor').addEventListener('keypress', function(e) {
         buyRole();
     }
 });
-
 
 let isSpinning = false;
 let rotation = 0;
@@ -392,7 +426,6 @@ function spinRoulette() {
   const targetAngle = (3 * Math.PI / 2) - targetSectorCenter;
   const normalizedAngle = (targetAngle + 2 * Math.PI) % (2 * Math.PI);
 
-
   const extraRotations = 8; 
   const totalRotation = extraRotations * 2 * Math.PI + normalizedAngle;
   const startRotation = rotation;
@@ -425,7 +458,7 @@ function showResult(index) {
     const resultDiv = document.getElementById("rouletteResult");
     const spinBtn = document.getElementById("spinButton");
     const closeBtn = document.querySelector(".spin-close");
-    const autoClaimDelay = 6000; // 6 секунд
+    const autoClaimDelay = 6000;
 
     const cooldownTime = 24 * 60 * 60 * 1000;
     const nextSpin = Date.now() + cooldownTime;
@@ -440,19 +473,15 @@ function showResult(index) {
 
     resultDiv.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; animation: fadeIn 0.5s;">
-            
             <div style="font-size: 48px; color: #5d8aff; margin-bottom: 15px; filter: drop-shadow(0 0 20px rgba(93, 138, 255, 0.5));">
                 <i class="${prize.icon}"></i>
             </div>
-            
             <span style="color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">
                 Вы выиграли:
             </span>
-            
             <span style="color: #fff; font-size: 24px; font-weight: 800; margin-bottom: 25px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
                 ${prize.text}
             </span>
-
             <div style="width: 100%; background: #222; height: 4px; border-radius: 2px; overflow: hidden; position: relative;">
                 <div id="autoClaimProgress" style="width: 100%; height: 100%; background: #4477ff; transition: width 6s linear;"></div>
             </div>
@@ -522,6 +551,3 @@ function renderPrizeList() {
         `)
         .join("");
 }
-
-
-
