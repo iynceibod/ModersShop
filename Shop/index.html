@@ -76,6 +76,18 @@
                 </div>
                 <div id="exchangeResult" class="exchange-result hidden"></div>
             </section>
+
+            <section class="exchange-section">
+                <h2 class="section-title">Обменять баллы на вирты</h2>
+                <div class="exchange-form">
+                    <input type="number" id="exchangeVirtsAmount" class="exchange-input" placeholder="Количество баллов" min="50" />
+                    <div class="exchange-actions">
+                        <button type="button" class="btn btn-secondary" onclick="calculateExchangeVirts()">Рассчитать</button>
+                        <button type="button" class="btn btn-primary" onclick="buyExchangeVirts()">Обменять</button>
+                    </div>
+                </div>
+                <div id="exchangeVirtsResult" class="exchange-result hidden"></div>
+            </section>
         </div>
 
         <div id="confirmModal" class="modal hidden">
