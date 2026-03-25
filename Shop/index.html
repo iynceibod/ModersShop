@@ -88,6 +88,18 @@
                 </div>
                 <div id="exchangeVirtsResult" class="exchange-result hidden"></div>
             </section>
+
+            <section class="exchange-section">
+                <h2 class="section-title">Обменять баллы на рубли</h2>
+                <div class="exchange-form">
+                    <input type="number" id="exchangeRublesAmount" class="exchange-input" placeholder="Количество баллов" min="3" />
+                    <div class="exchange-actions">
+                        <button type="button" class="btn btn-secondary" onclick="calculateExchangeRubles()">Рассчитать</button>
+                        <button type="button" class="btn btn-primary" onclick="buyExchangeRubles()">Обменять</button>
+                    </div>
+                </div>
+                <div id="exchangeRublesResult" class="exchange-result hidden"></div>
+            </section>
         </div>
 
         <div id="confirmModal" class="modal hidden">
