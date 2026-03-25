@@ -47,6 +47,9 @@ body {
   width: 100%;
   position: relative;
   padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .container::before {
@@ -60,7 +63,7 @@ body {
 }
 
 .header {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .header-title {
@@ -92,7 +95,7 @@ body {
 }
 
 .shop-section {
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .shop-grid {
@@ -189,6 +192,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 16px;
 }
 
 .exchange-input {
@@ -263,13 +267,16 @@ body {
   border-color: var(--blue-hover);
 }
 
+/* Secondary button inside exchange-section needs darker bg so it's visible against --card */
 .btn-secondary {
-  background: var(--surface);
-  border-color: var(--border);
+  background: #1a1a1a;
+  border-color: #2e2e2e;
+  color: var(--text);
 }
 
 .btn-secondary:hover {
-  background: var(--card);
+  background: #242424;
+  border-color: var(--blue);
 }
 
 .btn-large {
