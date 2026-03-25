@@ -149,6 +149,28 @@ function buyExchangeVirts() {
   }, 500);
 }
 
+function calculateExchangeRubles() {
+    const amount = parseInt(document.getElementById('exchangeRublesAmount').value);
+    if (!amount || amount < 3) {
+        showNotification('Минимум 3 балла', 'error');
+        return;
+    }
+    const rubles = Math.floor(amount / 3);
+    const result = document.getElementById('exchangeRublesResult');
+    result.textContent = `${amount} баллов = ${rubles} ₽`;
+    result.classList.remove('hidden');
+}
+
+function buyExchangeRubles() {
+    const amount = parseInt(document.getElementById('exchangeRublesAmount').value);
+    if (!amount || amount < 3) {
+        showNotification('Минимум 3 балла', 'error');
+        return;
+    }
+    const rubles = Math.floor(amount / 3);
+    showConfirmModal(`exchange_rubles`, amount, `Обменять ${amount} баллов на ${rubles} ₽`);
+}
+
 function showNicknameForm() {
     document.getElementById('nicknameForm').classList.remove('hidden');
     document.getElementById('newNickname').focus();
