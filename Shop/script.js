@@ -150,25 +150,40 @@ function buyExchangeVirts() {
 }
 
 function calculateExchangeRubles() {
-    const amount = parseInt(document.getElementById('exchangeRublesAmount').value);
-    if (!amount || amount < 3) {
-        showNotification('Минимум 3 балла', 'error');
-        return;
-    }
-    const rubles = Math.floor(amount / 3);
-    const result = document.getElementById('exchangeRublesResult');
-    result.textContent = `${amount} баллов = ${rubles} ₽`;
-    result.classList.remove('hidden');
+  const amount = parseInt(document.getElementById("exchangeRublesAmount").value);
+  const result = document.getElementById("exchangeRublesResult");
+
+  if (!amount || amount < 3) {
+    result.textContent = "Минимум 3 балла для обмена";
+    result.className = "exchange-result error-result";
+    result.classList.remove("hidden");
+    return;
+  }
+
+  const rubles = Math.floor(amount / 3);
+  result.textContent = `${amount} баллов = ${rubles.toLocaleString("ru-RU")} ₽`;
+  result.className = "exchange-result success-result";
+  result.classList.remove("hidden");
 }
 
 function buyExchangeRubles() {
-    const amount = parseInt(document.getElementById('exchangeRublesAmount').value);
-    if (!amount || amount < 3) {
-        showNotification('Минимум 3 балла', 'error');
-        return;
-    }
-    const rubles = Math.floor(amount / 3);
-    showConfirmModal(`exchange_rubles`, amount, `Обменять ${amount} баллов на ${rubles} ₽`);
+  const amount = parseInt(document.getElementById("exchangeRublesAmount").value);
+  if (!amount || amount < 3)
+    return showNotification("Минимум 3 балла для обмена");
+
+  const rubles = Math.floor(amount / 3);
+
+  showLoading();
+  setTimeout(() => {
+    tg.sendData(JSON.stringify({
+      type: "shop_purchase",
+      item: "exchange_rubles",
+      amount,
+      rubles,
+      cost: amount,
+    }));
+    hideLoading();
+  }, 500);
 }
 
 function showNicknameForm() {
